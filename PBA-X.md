@@ -182,3 +182,84 @@ A VRF is a cryptographic function that:
 * **Architectural Decentralization**: To address single point of failures in the network (Distributed systems)
 * **Political Decentralization**: Who gets to decide how the blockchain should operate? What is the governance model?
 * **Logical Decentralization**: Blockchains may be politically decentralized (no one controls them) and architecturally decentralized (no infrastructural central point of failure) but they are logically centralized. There is one commonly agreed state and the system behaves like a single computer. Most blockchains are logically centralized.
+
+## 2.3 Blockchain Architecture
+* Blockchain architecture consists of multiple layers, each with specific functions:
+    * **Application Layer**: Top-most layer where users interact with blockchain. Includes dApps, smart contracts, wallets, and user interfaces. Provides services and functionality to end users
+    * **Consensus Layer**: Ensures all nodes agree on the state of the blockchain. Implements consensus mechanisms (PoW, PoS, etc.). Validates and orders transactions
+    * **Network Layer**: Handles peer-to-peer communication between nodes. Manages transaction and block propagation. Maintains network connectivity and node discovery
+    * **Data Layer**: Defines structure of blockchain data (blocks, transactions). Implements cryptographic primitives and data structures. Handles data storage and retrieval
+    * **Infrastructure Layer**: Base layer providing hardware and software requirements. Includes nodes, physical networks, and computing resources. Supports basic blockchain operations
+```mermaid
+graph TD
+    subgraph "Blockchain Architecture Layers"
+        A[Application Layer] --> C
+        C[Consensus Layer] --> N
+        N[Network Layer] --> D
+        D[Data Layer] --> I
+        I[Infrastructure Layer]
+        
+        A -.- A1["dApps, Smart Contracts, 
+        User Interfaces"]
+        C -.- C1["PoW/PoS, 
+        State Agreement"]
+        N -.- N1["P2P Communication,
+        Node Discovery"]
+        D -.- D1["Blocks, Transactions,
+        Cryptography"]
+        I -.- I1["Nodes, Hardware,
+        Base Network"]
+        
+        style A fill:#f96,stroke:#333
+        style C fill:#bbf,stroke:#333
+        style N fill:#bfb,stroke:#333
+        style D fill:#fbb,stroke:#333
+        style I fill:#ddd,stroke:#333
+    end
+```
+* Different **types of blockchain architectures**:
+```mermaid
+graph TD
+    subgraph "Blockchain Architectures"
+        subgraph "Monolithic"
+            M[Single Chain] --> M1[Consensus]
+            M --> M2[Execution]
+            M --> M3[Data]
+            style M fill:#f96,stroke:#333
+        end
+
+        subgraph "Modular"
+            MD[Base Layer] --> E[Execution Layer]
+            MD --> D[Data Layer]
+            MD --> S[Settlement Layer]
+            style MD fill:#bbf,stroke:#333
+        end
+
+        subgraph "Multi-chain"
+            MC[Main Chain] --> P1[Chain 1]
+            MC --> P2[Chain 2]
+            MC --> P3[Chain 3]
+            style MC fill:#bfb,stroke:#333
+        end
+    end
+
+    subgraph "Examples"
+        M -.- ME[Ethereum 1.0]
+        MD -.- MDE[Celestia]
+        MC -.- MCE[Polkadot]
+    end
+```
+* Layers in Blockchain Ecosystem Architecture:
+    * **Layer 0**: Network infrastructure protocols that allow blockchains to be built and communicate
+        * Not a blockchain itself
+        * A foundation layer/protocol
+        * Example: Polkadot isn't a blockchain, it's a protocol that allows creation and connection of blockchains (parachains)
+    * **Layer 1**: Actual base blockchains
+        * These ARE blockchains
+        * Independent networks with their own consensus
+        * Example: Ethereum is a L1 blockchain
+    * **Layer 2**: Scaling solutions built ON TOP of L1 blockchains
+        * Not independent blockchains
+        * Solutions that extend L1 capabilities
+        * Example: Optimism isn't its own blockchain, it's a scaling solution for Ethereum
+
