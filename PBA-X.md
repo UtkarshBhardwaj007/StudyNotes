@@ -36,3 +36,117 @@ A cryptographic system should be secure even if everything about the system, exc
 * **In Practice** digital signatures don't sign the entire message. Instead a hash function is used to hash the message and create a `Digest` or `Fingerprint` of fixed length. The reason for this is that Cryptographic hashing functions usually work on fixed size inputs.
 * One challenge that Digital signatures address is `Replay Attacks`. A replay attack is when an attacker captures a message and then later re-sends it to the recipient. The recipient can't tell if the message is new or old. To prevent this, Digital signatures often use additional information like `nonces` and `timestamps`/`lifetimes`.
 * **Multisig accounts** are accounts that require multiple signatures to authorize a transaction. This is useful for things like other decentralized organizations.
+
+## 1.6 Hash Based Data Structures
+
+### 1.6.1 Hash Chains
+* A hash chain is a fundamental data structure used in blockchains to ensure the integrity and immutability of data. It is a sequence of blocks (objects), each containing data and a cryptographic hash of the previous block, forming a chain (could be anything like vector or list). This structure ensures that any alteration in a block would require changes to all subsequent blocks, making it tamper-evident.
+* Most blockchain implementations (including major ones like Bitcoin) store blocks in a database or vector and use the hash values for validation, not traversal.
+
+### 1.6.2 Merkle Trees
+* Merkle tree also known as hash tree is a data structure used for data verification and synchronization. 
+* It is a tree data structure where each non-leaf node is a hash of it’s child nodes. All the leaf nodes are at the same depth and are as far left as possible. 
+* Each transaction gets hashed, Hashes are paired and hashed again, Process repeats until single root hash, Root hash goes in block header of the blockchain block.
+```mermaid
+graph TD
+    subgraph "Block Header"
+        MR[Merkle Root: H1234]
+    end
+    
+    subgraph "Merkle Tree"
+        H1234[H1234: Root Hash] --- H12[H12]
+        H1234 --- H34[H34]
+        
+        H12 --- H1[H1]
+        H12 --- H2[H2]
+        H34 --- H3[H3]
+        H34 --- H4[H4]
+        
+        H1 --- Tx1[Transaction 1: Alice sends 5 BTC to Bob]
+        H2 --- Tx2[Transaction 2: Bob sends 2 BTC to Charlie]
+        H3 --- Tx3[Transaction 3: Dave sends 1 BTC to Alice]
+        H4 --- Tx4[Transaction 4: Charlie sends 0.5 BTC to Dave]
+    end
+```
+### 1.6.3 Merkle Mountain Range
+* A Merkle Mountain Range (MMR) is a variation of Merkle Trees that allows efficient appending of new elements. Think of it as a collection of perfect binary trees of different heights, forming a "mountain range" profile.
+* Efficient appending O(log n), Easy to prove membership, Good for growing datasets, Used in blockchain UTXO sets.
+
+```mermaid
+graph TD
+    subgraph "UTXO Management with MMR"
+        Root[MMR Root] --- P1[Peak 1]
+        Root --- P2[Peak 2]
+        
+        P1 --- U1[UTXOs 1+2]
+        P1 --- U2[UTXOs 3+4]
+        
+        P2 --- U3[UTXO 5]
+        
+        U1 --- TX1[5 BTC UTXO]
+        U1 --- TX2[3 BTC UTXO]
+        U2 --- TX3[1 BTC UTXO]
+        U2 --- TX4[2 BTC UTXO]
+        U3 --- TX5[0.5 BTC UTXO]
+        
+        style Root fill:#f9f,stroke:#333
+        style P1 fill:#bbf,stroke:#333
+        style P2 fill:#bbf,stroke:#333
+        style TX1 fill:#bfb,stroke:#333
+        style TX2 fill:#bfb,stroke:#333
+        style TX3 fill:#bfb,stroke:#333
+        style TX4 fill:#bfb,stroke:#333
+        style TX5 fill:#bfb,stroke:#333
+    end
+```
+* MMR provides a way for blockchain UTXO management. When new transaction creates UTXOs:
+    * Hash the new UTXOs
+    * Add to MMR structure
+    * Update peaks if needed
+* When spending UTXOs:
+    * Prove UTXO exists using MMR path
+    * Remove spent UTXO
+    * Add new UTXOs from transaction
+
+### 1.6.4 Radix/Patricia Tries
+* A Patricia Trie (Practical Algorithm To Retrieve Information Coded In Alphanumeric) is a modified trie that compresses nodes with only one child, making it more space-efficient. In blockchains, it's used to store state data efficiently.
+```mermaid
+graph TD
+    subgraph "Patricia Trie State Storage"
+        SR[State Root Hash] --> A1[Address: 0xa...]
+        SR --> A2[Address: 0xb...]
+        
+        A1 --> |Account State| AS1["Account A Data:
+        - Balance: 100 ETH
+        - Nonce: 5
+        - Code Hash
+        - Storage Root"]
+        
+        A2 --> |Smart Contract| AS2["Contract B Data:
+        - Balance: 50 ETH
+        - Nonce: 12
+        - Code Hash
+        - Storage Root"]
+        
+        AS2 --> |Storage Trie| ST["Contract Storage:
+        Key1: Value1
+        Key2: Value2
+        ..."]
+        
+        style SR fill:#f96,stroke:#333,stroke-width:4px
+        style A1 fill:#bbf,stroke:#333
+        style A2 fill:#bbf,stroke:#333
+        style AS1 fill:#bfb,stroke:#333
+        style AS2 fill:#bfb,stroke:#333
+        style ST fill:#fbb,stroke:#333
+    end
+
+    subgraph "Key Features"
+        SR -.- K1["✓ Single Root Hash 
+        verifies entire state"]
+        AS1 -.- K2["✓ Efficient Proofs 
+        for account data"]
+        ST -.- K3["✓ Separate Storage Trie 
+        for each contract"]
+    end
+```
