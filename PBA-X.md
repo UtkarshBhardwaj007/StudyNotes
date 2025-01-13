@@ -150,3 +150,21 @@ graph TD
         for each contract"]
     end
 ```
+
+## 1.7 Advanced Cryptography Topics
+
+### 1.7.1 Shamir Secret Sharing
+* Shamir Secret Sharing is a cryptographic method to split a secret into n shares, where any k shares (threshold) can reconstruct the secret, but k-1 or fewer shares reveal nothing about the secret.
+
+### 1.7.2 Verifiable Random Functions (VRFs)
+A VRF is a cryptographic function that:
+* Takes an input and private key to generate a random number
+* Provides a proof that the number was generated correctly
+* Anyone can verify the proof using the public key
+* Same input + private key always gives same output
+* Output appears random to anyone without the private key
+
+### 1.7.3 Zero-Knowledge Proofs (ZKPs)
+* A zero knowledge proof is a method where one party (prover) can prove to another party (verifier) that a statement is true without revealing any information beyond the validity of the statement.
+
+# 2. Fundamentals of blockchains
