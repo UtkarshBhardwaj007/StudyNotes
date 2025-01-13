@@ -168,3 +168,17 @@ A VRF is a cryptographic function that:
 * A zero knowledge proof is a method where one party (prover) can prove to another party (verifier) that a statement is true without revealing any information beyond the validity of the statement.
 
 # 2. Fundamentals of blockchains
+
+## 2.1 Blockchain Concepts Pre-Quiz:
+* Bitcoin uses `UTXO` model instead of the `Accounts` model to process transactions.
+* Typically, The hash of the NFT images and videos is stored on the blockchain network. The original content is stored typically on a decentralized storage platform which may or may not use blockchain technology stack. Storing them directly on the blocks or in the blockchain state can be expensive and is an inefficient implementation of the NFT use case.
+* Just because the transaction shows up on Bitcoin block explorers does not mean the transaction is final. The finality of the Bitcoin blockchain is probabilistic. That is why central exchanges wait a couple of hours before letting you transact with the Bitcoin you deposited on their platform.
+* The security guarantees offered by Ethereum Roll-ups (Layer 2 chains) are **NOT** the same as the security guarantees of the Ethereum network (Layer 1 chain).
+* Blockchain network's security and resilience to attacks rely on factors like decentralization, consensus mechanisms, and protocol design.
+
+## 2.2 Blockchain Networks:
+
+### 2.2.1 Types of Decentralization
+* **Architectural Decentralization**: To address single point of failures in the network (Distributed systems)
+* **Political Decentralization**: Who gets to decide how the blockchain should operate? What is the governance model?
+* **Logical Decentralization**: Blockchains may be politically decentralized (no one controls them) and architecturally decentralized (no infrastructural central point of failure) but they are logically centralized. There is one commonly agreed state and the system behaves like a single computer. Most blockchains are logically centralized.
