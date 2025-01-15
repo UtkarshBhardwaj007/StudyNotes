@@ -263,3 +263,46 @@ graph TD
         * Solutions that extend L1 capabilities
         * Example: Optimism isn't its own blockchain, it's a scaling solution for Ethereum
 
+## 2.4 Blockchain Trilemma
+* The Blockchain Trilemma refers to the fundamental challenge in blockchain design where it's seemingly impossible to achieve all three key properties simultaneously:
+    * Decentralization
+    * Security
+    * Scalability
+
+## 2.5 Blockchain Consensus
+
+### 2.5.1 Layers of Consensus
+These are used in consensus mechanisms to filter out chains until we find the canonical chain.
+* **State Machine Validity**: This checks if the history of transaction (`State Transitions`) are valid.
+* **Political Validity**: We might reject blocks that don't meet certain `political` or `arbitrary` rules. For example, in Bitcoin, blocks bigger than 1MB are rejected.
+* **Right to Author**: This checks if the block was authored by the right person who was elected to author the block.
+* **Fork Choice**: Each node has its own view of the blockchain and decides, based on that, if the current block is valid or not. A block in an invalid fork would be rejected.
+
+### 2.5.2 Consensus Mechanisms
+* **Proof of Work (PoW)**: 
+    * It is a `permissionless` consensus mechanism that requires miners to solve complex mathematical problems to validate transactions and add new blocks to the blockchain. It ties the blockchain's value to a real world scarce resource (energy).
+    * Downsides: It is energy-intensive and the blocks are produced at varying times.
+* **Proof of Stake (PoS)**:
+    * A consensus mechanism where validators stake (lock up) cryptocurrency to get the right to validate blocks. The more you stake, the higher chance of being selected to validate.
+* **NOTE**: `PoW` and `PoS` are mechanisms for `block authoring`. Consensus on `block finality` is achieved through finality gadgets like `GRANDPA` for deterministic block finality.
+
+### 2.5.3 Block Finality Mechanisms
+
+* **Block Finality**: The guarantee that a block cannot be reverted/changed once added to the chain.
+* **Finality Gadgets**: These are mechanisms that allow a blockchain to reach `Deterministic Finality`. In Polkadot, the primary finality gadget is `GRANDPA`(GHOST-based Recursive Ancestor Deriving Prefix Agreement).
+
+#### 2.5.3.1 Probabilistic Finality
+* Finality becomes stronger over time. More blocks = more certainty. Used in BTC.
+* There is always a risk of reverting a block if a longer chain is found.
+
+#### 2.5.3.2 Deterministic Finality
+* Finality is guaranteed. Once confirmed, block cannot be reverted. Used in PoS systems like Polkadot. Example: After 2/3 validators sign, block is final.
+* There is no risk of reverting a block.
+
+#### 2.5.3.3 GRANDPA
+* GRANDPA is responsible for finalising blocks in polkadot.
+* Polkadot uses a two-phase voting system (`Hybrid Consensus Model`) to reach finality. It separates the block production from block finality.
+
+### 2.5.4 Forks in Blockchain
+* **Soft Fork**: A change to the protocol that is backward compatible. Tightens/adds rules. Old nodes can still validate blocks.
+* **Hard Fork**: A change to the protocol that is not backward compatible. Changes fundamental rules. Old nodes will reject new blocks.
